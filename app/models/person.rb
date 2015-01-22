@@ -8,4 +8,10 @@ class Person < ActiveRecord::Base
 
     default_scope { where(:voided => 0) } if column_names.include?("voided")
 
+  def fullname
+
+    "#{self.names.first.given_name rescue nil} #{self.names.first.family_name rescue nil}"
+
+  end
+
 end

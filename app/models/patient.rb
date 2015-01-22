@@ -7,4 +7,10 @@ class Patient < ActiveRecord::Base
 
     default_scope { where(:voided => 0) } if column_names.include?("voided")
 
+  def national_id
+
+    "#{self.patient_identifiers.where(identifier_type: (PatientIdentifierType.where(name: "National id").first.id)).first.identifier rescue nil}"
+
+  end
+
 end

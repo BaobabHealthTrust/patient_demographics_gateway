@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+
+  DemographicsDataXchange::Application.routes.draw do
+    wash_out :demographics
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
