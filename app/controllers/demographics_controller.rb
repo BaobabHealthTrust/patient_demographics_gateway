@@ -93,8 +93,8 @@ class DemographicsController < ApplicationController
 
     matches = Person.joins(:names => :person_name_code).where("person_name_code.given_name_code" => params[:firstname].soundex,
                                                               "person_name_code.family_name_code" => params[:lastname].soundex,
-                                                              gender: (params[:gender].to_s[0] rescue nil)) # rescue []
-
+                                                              gender: (params[:gender].to_s[0] rescue nil)
+    ).limit(params[:pagesize]).offset(params[:pagesize].to_i * params[:page].to_i) # rescue []
 
     string = ""
 
@@ -172,14 +172,15 @@ class DemographicsController < ApplicationController
   end
 
   soap_action "get_patient_by_name_and_dob",
-              :args   => { :firstname => :string, :lastname => :string, :gender => :string, :birthdate => :string },
+              :args   => { :firstname => :string, :lastname => :string, :gender => :string, :birthdate => :string, :page => :integer, :pagesize => :integer },
               :return => :string
   def get_patient_by_name_and_dob
 
     matches = Person.joins(:names => :person_name_code).where("person_name_code.given_name_code" => params[:firstname].soundex,
                                                               "person_name_code.family_name_code" => params[:lastname].soundex,
                                                               gender: (params[:gender].to_s[0] rescue nil),
-                                                              :birthdate => (params[:birthdate].to_date.strftime("%Y-%m-%d") rescue nil)) # rescue []
+                                                              :birthdate => (params[:birthdate].to_date.strftime("%Y-%m-%d") rescue nil)
+    ).limit(params[:pagesize]).offset(params[:pagesize].to_i * params[:page].to_i) # rescue []
 
     string = ""
 
